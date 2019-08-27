@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace WebApiDemo.Controllers
 {
@@ -16,7 +18,8 @@ namespace WebApiDemo.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var claim = HttpContext.User.Claims.FirstOrDefault();
+            return new string[] { $"Value={claim.Value}", $"Type={claim.Type}", $"Subject={claim.Subject.}", $"Issuer={claim.Issuer}", $"ValueType={claim.ValueType}" };
         }
 
         // GET api/values/5
